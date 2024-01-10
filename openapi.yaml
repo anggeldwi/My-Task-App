@@ -1,0 +1,397 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is a MyTaskApp api documentation BE20 altera academy.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: "1.0.0"
+  title: MyTaskApp
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/DWIMIRANDAA/MyTaskApp/1.0.0
+  - url: 'https://petstore.swagger.io/v2'
+tags:
+  - name: MyTaskApp
+    description: Everything about your task app
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+
+
+paths:
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Register
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      description: Operasi untuk registrasi pengguna.
+  
+
+    get:
+      tags:
+        - Users
+      summary: Get User Profile
+      description: Mendapatkan profil pengguna yang sedang login.
+      parameters:
+        - name: name
+          in: path
+          description: The name that needs to be fetched. Use user1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+
+    put:
+      tags:
+        - Users
+      summary: Update User Profile
+      description: Mengupdate data pengguna berdasarkan data token ID yang login.
+      parameters:
+        - name: name
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Update successful
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Updated user object
+        required: true
+
+    delete:
+      tags:
+        - Users
+      summary: Delete User Account
+      description: Menghapus data pengguna berdasarkan data token ID yang login.
+      operationId: deleteUser
+      parameters:
+        - name: name
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid name 
+        '404':
+          description: User not found
+        
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: User Login
+      description: "Endpoint untuk login pengguna."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+  
+  /projects:
+    post:
+      tags:
+        - Projects
+      summary: Create Project
+      description: Membuat project baru berdasarkan data token ID yang login.
+      responses:
+        '200':
+          description: OK
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+
+    get:
+      tags:
+        - Projects
+      summary: Get User Projects
+      description: Melihat list seluruh project yang dimiliki user berdasarkan data token ID yang login.
+      parameters:
+        - name: project
+          in: path
+          description: The name that needs to be fetched. Use user1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Invalid 
+        '404':
+          description: not found
+
+  /projects/{projectId}:
+    get:
+      tags:
+        - Projects
+      summary: Get Project Details
+      description: "Melihat detail project berdasarkan ID project. Sekaligus menampilkan task dari project tersebut."
+      parameters:
+        - name: projectid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID project yang ingin dilihat.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  project:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      description:
+                        type: string
+                  tasks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        taskId:
+                          type: integer
+                        taskName:
+                          type: string
+                        description:
+                          type: string
+        
+
+    put:
+      tags:
+        - Projects
+      summary: Update Project
+      description: Mengupdate data project berdasarkan ID project.
+      parameters:
+        - name: projectid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID project yang ingin diupdate.
+      responses:
+        '200':
+          description: OK
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+
+    delete:
+      tags:
+        - Projects
+      summary: Delete Project
+      description: Menghapus data project berdasarkan ID project.
+      parameters:
+        - name: projectid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID project yang ingin dihapus.
+      responses:
+        '200':
+          description: OK
+        
+
+  /tasks:
+    post:
+      tags:
+        - Tasks
+      summary: Create Task
+      description: "Membuat task baru di sebuah project. ID project dan data task bisa dimasukkan via request body."
+      responses:
+        '200':
+          description: OK
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+
+  /tasks/{taskId}:
+    get:
+      tags:
+        - Tasks
+      summary: Get Task Details
+      description: "Melihat detail task berdasarkan ID task."
+      parameters:
+        - name: taskid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID task yang ingin dilihat.
+      responses:
+        '200':
+          description: OK
+    
+    put:
+      tags:
+        - Tasks
+      summary: Update Task Status
+      description: |
+        Mengupdate status task (completed atau not completed).
+        Status task bisa dikirim via request body.
+      parameters:
+        - name: taskid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID task yang ingin diupdate.
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+
+    delete:
+      tags:
+        - Tasks
+      summary: Delete Task
+      description: "Menghapus task sesuai dengan ID task."
+      parameters:
+        - name: taskid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID task yang ingin dihapus.
+      responses:
+        '200':
+          description: OK
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone number: 
+          type: string
+        addrres: 
+          type: string
+        role : 
+          type: string
+        password:
+          type: string
+      required: 
+        - name
+        - email
+        - phone number
+        - address
+        - role
+        - password
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - name
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+        project_id:
+          type: integer 
+        name:
+          type: string
+        status:
+          type: string
+          enum: ["completed", "not completed"]
+      required:
+        - name
+        - status
