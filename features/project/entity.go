@@ -29,7 +29,7 @@ type Core struct {
 // interface untuk Data Layer
 type ProjectDataInterface interface {
 	Insert(input Core) error
-	SelectAll() ([]Core, error)
+	SelectAll(userID int) ([]Core, error)
 	SelectByProjecttID(id int) ([]Core, error)
 	Update(id int, input Core) error
 	Delete(id int) error
@@ -38,7 +38,7 @@ type ProjectDataInterface interface {
 // interface untuk Service Layer
 type ProjectServiceInterface interface {
 	Create(input Core) error
-	SelectAllAll() ([]Core, error)
+	SelectAll(userID int) ([]Core, error)
 	SelectByProjecttID(id int) ([]Core, error)
 	Update(id int, input Core) error
 	Delete(id int) error

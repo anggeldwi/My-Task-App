@@ -46,3 +46,24 @@ func (handler *ProjectHandler) CreateProject(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, responses.WebResponse("success insert data", nil))
 }
+
+func (handler *ProjectHandler) GetProjects(c echo.Context) error {
+	// Extract ID user from JWT token
+	userID := middlewares.ExtractTokenUserId(c)
+	log.Println("UserID:", userID)
+
+	// Memanggil fungsi logic untuk mendapatkan semua proyek milik pengguna
+	projects, err := handler.projectService.SelectAll(userID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, responses.WebResponse("Failed to get projects by user ID", nil))
+	}
+
+	// Transform projects from project.Core to ProjectResponse
+	var projectsResponse []ProjectResponse
+	for _, projectCore := range projects {
+		projectsResponse = append(projectsResponse, CoreToResponse(projectCore))
+	}
+
+	// Mengembalikan proyek dalam respons JSON
+	return c.JSON(http.StatusOK, responses.WebResponse("Success read data.", projectsResponse))
+}

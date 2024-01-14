@@ -25,7 +25,7 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	userHandlerAPI := _userHandler.New(userService)
 
 	// Inisialisasi data dan service untuk entitas Product
-	projectData := _projectData.NewProduct(db)
+	projectData := _projectData.NewProject(db)
 	projectService := _projectService.NewProjectService(projectData)
 	projectHandlerAPI := _projectHandler.NewProjectHandler(projectService)
 
@@ -36,6 +36,7 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	e.PUT("/users", userHandlerAPI.Update, middlewares.JWTMiddleware())
 	e.DELETE("/users", userHandlerAPI.DeleteUser, middlewares.JWTMiddleware())
 
-	// Definisikan rute untuk entitas User
-	e.POST("/projects", projectHandlerAPI.CreateProject)
+	// Definisikan rute untuk entitas Project
+	e.POST("/projects", projectHandlerAPI.CreateProject, middlewares.JWTMiddleware())
+	e.GET("/projects", projectHandlerAPI.GetProjects, middlewares.JWTMiddleware())
 }

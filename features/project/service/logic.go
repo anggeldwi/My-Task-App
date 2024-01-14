@@ -24,9 +24,9 @@ func (service *productService) Create(input project.Core) error {
 	return service.projectData.Insert(input)
 }
 
-// SelectAllAll implements project.ProjectServiceInterface.
-func (*productService) SelectAllAll() ([]project.Core, error) {
-	panic("unimplemented")
+// SelectAll implements project.ProjectServiceInterface.
+func (service *productService) SelectAll(userID int) ([]project.Core, error) {
+	return service.projectData.SelectAll(userID)
 }
 
 // SelectByProjecttID implements project.ProjectServiceInterface.

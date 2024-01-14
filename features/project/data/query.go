@@ -11,7 +11,7 @@ type projectQuery struct {
 	db *gorm.DB
 }
 
-func NewProduct(db *gorm.DB) project.ProjectDataInterface {
+func NewProject(db *gorm.DB) project.ProjectDataInterface {
 	return &projectQuery{
 		db: db,
 	}
@@ -39,8 +39,27 @@ func (repo *projectQuery) Insert(input project.Core) error {
 }
 
 // SelectAll implements project.ProjectDataInterface.
-func (*projectQuery) SelectAll() ([]project.Core, error) {
-	panic("unimplemented")
+func (repo *projectQuery) SelectAll(userID int) ([]project.Core, error) {
+	var projectsDataGorm []Project
+
+	tx := repo.db.Where("user_id = ?", userID).Find(&projectsDataGorm)
+
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	var projectsDataCore []project.Core
+	for _, value := range projectsDataGorm {
+		var projectCore = project.Core{
+			ID:          value.ID,
+			Name:        value.Name,
+			UserID:      value.UserID,
+			Description: value.Description,
+		}
+		projectsDataCore = append(projectsDataCore, projectCore)
+	}
+
+	return projectsDataCore, nil
 }
 
 // SelectByProjecttID implements project.ProjectDataInterface.
