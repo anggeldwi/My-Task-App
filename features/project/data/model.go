@@ -16,6 +16,13 @@ type User struct {
 	Role        string
 }
 
+type Task struct {
+	gorm.Model
+	Task      string `json:"task" form:"task"`
+	ProjectID uint   `json:"project_id" form:"project_id"`
+	Status    string `json:"status" form:"status"`
+}
+
 // Project is the gorm model for the project
 type Project struct {
 	gorm.Model
@@ -23,9 +30,10 @@ type Project struct {
 	UserID      uint
 	Description string
 	User        User
+	Tasks       []Task `gorm:"foreignKey:ProjectID"`
 }
 
-func CoreToModelProduct(core project.Core) Project {
+func CoreToModelProject(core project.Core) Project {
 	return Project{
 		Name:        core.Name,
 		Description: core.Description,

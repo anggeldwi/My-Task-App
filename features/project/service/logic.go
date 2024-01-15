@@ -26,20 +26,40 @@ func (service *productService) Create(input project.Core) error {
 
 // SelectAll implements project.ProjectServiceInterface.
 func (service *productService) SelectAll(userID int) ([]project.Core, error) {
+	// Validasi userID
+	if userID <= 0 {
+		return nil, errors.New("invalid userID")
+	}
+
 	return service.projectData.SelectAll(userID)
 }
 
 // SelectByProjecttID implements project.ProjectServiceInterface.
-func (*productService) SelectByProjecttID(id int) ([]project.Core, error) {
-	panic("unimplemented")
+func (service *productService) SelectByProjectID(id int) ([]project.Core, error) {
+	// Validasi projectID
+	if id <= 0 {
+		return nil, errors.New("invalid projectID")
+	}
+
+	return service.projectData.SelectByProjectID(id)
 }
 
 // Update implements project.ProjectServiceInterface.
-func (*productService) Update(id int, input project.Core) error {
-	panic("unimplemented")
+func (service *productService) Update(id int, input project.Core) error {
+	// Validasi projectID
+	if id <= 0 {
+		return errors.New("invalid projectID")
+	}
+
+	return service.projectData.Update(id, input)
 }
 
 // Delete implements project.ProjectServiceInterface.
-func (*productService) Delete(id int) error {
-	panic("unimplemented")
+func (service *productService) Delete(id int) error {
+	// Validasi projectID
+	if id <= 0 {
+		return errors.New("invalid projectID")
+	}
+
+	return service.projectData.Delete(id)
 }

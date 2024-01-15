@@ -20,7 +20,7 @@ func NewTaskHandler(taskService task.TaskServiceInterface) *TaskHandler {
 	}
 }
 
-func (handler *TaskHandler) CreateProject(c echo.Context) error {
+func (handler *TaskHandler) CreateTask(c echo.Context) error {
 	// // Extract ID user from JWT token
 	// userID := middlewares.ExtractTokenUserId(c)
 	// log.Println("UserID:", userID)

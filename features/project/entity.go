@@ -11,6 +11,7 @@ type User struct {
 
 // struct task model
 type Task struct {
+	ID        uint
 	Task      string
 	ProjectID uint
 	Status    string
@@ -23,14 +24,14 @@ type Core struct {
 	UserID      uint
 	Description string
 	User        User
-	Task        *Task
+	Task        []*Task
 }
 
 // interface untuk Data Layer
 type ProjectDataInterface interface {
 	Insert(input Core) error
 	SelectAll(userID int) ([]Core, error)
-	SelectByProjecttID(id int) ([]Core, error)
+	SelectByProjectID(id int) ([]Core, error)
 	Update(id int, input Core) error
 	Delete(id int) error
 }
@@ -39,7 +40,7 @@ type ProjectDataInterface interface {
 type ProjectServiceInterface interface {
 	Create(input Core) error
 	SelectAll(userID int) ([]Core, error)
-	SelectByProjecttID(id int) ([]Core, error)
+	SelectByProjectID(id int) ([]Core, error)
 	Update(id int, input Core) error
 	Delete(id int) error
 }
