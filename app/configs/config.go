@@ -56,7 +56,7 @@ func ReadEnv() *AppConfig {
 		isRead = false
 	}
 	if val, found := os.LookupEnv("JWTSECRET"); found {
-		app.DB_NAME = val
+		JWT_SECRET = val
 		isRead = false
 	}
 
