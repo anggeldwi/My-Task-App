@@ -4,6 +4,10 @@ import (
 	"fmt"
 	"my-task-api/app/configs"
 
+	pd "my-task-api/features/project/data"
+	td "my-task-api/features/task/data"
+	ud "my-task-api/features/user/data"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -26,7 +30,5 @@ func InitDBMysql(cfg *configs.AppConfig) *gorm.DB {
 
 // db migration
 func InitialMigration(DB *gorm.DB) {
-	DB.AutoMigrate(&User{})
-	DB.AutoMigrate(&Project{})
-	DB.AutoMigrate(&Task{})
+	DB.AutoMigrate(&ud.User{}, &pd.Project{}, &td.Task{})
 }
