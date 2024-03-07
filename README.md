@@ -1,4 +1,4 @@
-# E-Commerce Apps Project (Golang)
+# My Task Apps (Golang)
 My task app adalah aplikasi yang digunakan untuk management task pengguna.
 
 Swagger open api : https://app.swaggerhub.com/apis/DWIMIRANDAA/MyTaskApp/1.0.0
@@ -29,3 +29,4 @@ Swagger open api : https://app.swaggerhub.com/apis/DWIMIRANDAA/MyTaskApp/1.0.0
 Untuk menjalankan server, gunakan perintah:
     
     go run main.go
+
